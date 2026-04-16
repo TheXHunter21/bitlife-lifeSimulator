@@ -10,7 +10,7 @@ const basePlayer = {
     health: 50,
     intelligence: 50,
     looks: 50,
-    charisma: 50
+    charisma: 50,
     educationHistory: [], // Ej: Guardará ["Escuela Secundaria", "Universidad"]
     mainOccupation: null, // Guardará el trabajo o escuela actual
     partTimeJob: null,
