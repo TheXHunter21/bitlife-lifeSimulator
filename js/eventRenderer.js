@@ -29,15 +29,15 @@ const EventRenderer = (() => {
    * @param {Object} statChanges - Objeto con los cambios {stat: valor}
    */
   const applyStatChanges = (statChanges) => {
-    if (!statChanges || Object.keys(statChanges).length === 0) {
-      return;
-    }
+    if (!statChanges || Object.keys(statChanges).length === 0) return;
 
     for (const [stat, value] of Object.entries(statChanges)) {
       if (basePlayer.hasOwnProperty(stat)) {
         basePlayer[stat] += value;
-        // Opcional: limitar valores entre rangos válidos
-        if (stat === 'happiness' || stat === 'health') {
+        
+        // SOLUCIÓN: Añadimos TODAS las estadísticas que tienen barras (0 a 100)
+        const cappedStats = ['happiness', 'health', 'intelligence', 'looks', 'charisma'];
+        if (cappedStats.includes(stat)) {
           basePlayer[stat] = Math.max(0, Math.min(100, basePlayer[stat]));
         }
       }

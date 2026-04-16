@@ -102,33 +102,26 @@ const EventManager = (() => {
    * @returns {Object|null} Evento que ocurrió o null si ninguno ocurrió
    */
   const getRandomEvent = (playerStats) => {
-    if (events.length === 0) {
-      console.warn('No hay eventos cargados');
-      return null;
-    }
+    if (events.length === 0) return null;
 
-    // Filtrar eventos que cumplan requisitos
-    const validEvents = events.filter(
-      (event) => meetsRequirements(event, playerStats)
-    );
+    // 1. Filtrar eventos que cumplan requisitos
+    const validEvents = events.filter(event => meetsRequirements(event, playerStats));
+    if (validEvents.length === 0) return null;
 
-    if (validEvents.length === 0) {
-      return null;
-    }
+    // 2. SOLUCIÓN: Desordenar (shuffle) aleatoriamente el array para evitar sesgos
+    const shuffledEvents = validEvents.sort(() => Math.random() - 0.5);
 
-    // Iterar sobre eventos válidos y evaluar probabilidad
-    for (const event of validEvents) {
+    // 3. Iterar sobre los eventos desordenados
+    for (const event of shuffledEvents) {
       const probability = getEventProbability(event, playerStats.age);
       const randomValue = Math.random() * 100;
       if (randomValue < probability) {
-        return event;
+        return event; // El primero que gane su tirada de dados, ocurre
       }
     }
 
-    // Ningún evento fue activado
     return null;
   };
-
   /**
    * Obtiene todos los eventos cargados (útil para debug)
    * @returns {Array} Array de eventos
