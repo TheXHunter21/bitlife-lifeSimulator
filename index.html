@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Simulador de Vida - Plantilla Universal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+
+    <div id="game-container">
+        <header id="game-header">
+            <div class="character-info">
+                <span id="player-flag">🇪🇸</span>
+                <span id="player-name">Crea un personaje</span><br>
+                <span id="player-title" class="sub-text">Crea un personaje</span>
+            </div>
+            <div class="bank-balance">
+                <span id="player-money">€0</span><br>
+                <span class="sub-text">Bank Balance</span>
+            </div>
+        </header>
+
+        <main id="life-log-container">
+            <div id="life-log">
+                </div>
+        </main>
+
+        <footer id="game-footer">
+            <div class="status-bars">
+                <div class="status-bar-group">
+                    <span class="status-emoji">😆</span>
+                    <span class="status-label">Happiness</span>
+                    <div class="progress-bar-container">
+                        <div id="bar-happiness" class="progress-bar" style="width: 50%;">50%</div>
+                    </div>
+                </div>
+                <div class="status-bar-group">
+                    <span class="status-emoji">❤️</span>
+                    <span class="status-label">Health</span>
+                    <div class="progress-bar-container">
+                        <div id="bar-health" class="progress-bar health-bad" style="width: 50%;">50%</div>
+                    </div>
+                </div>
+                <div class="status-bar-group">
+                    <span class="status-emoji">🧠</span>
+                    <span class="status-label">Smarts</span>
+                    <div class="progress-bar-container">
+                        <div id="bar-smarts" class="progress-bar" style="width: 50%;">50%</div>
+                    </div>
+                </div>
+                <div class="status-bar-group">
+                    <span class="status-emoji">☀️</span>
+                    <span class="status-label">Looks</span>
+                    <div class="progress-bar-container">
+                        <div id="bar-looks" class="progress-bar" style="width: 50%;">50%</div>
+                    </div>
+                </div>
+                <div class="status-bar-group">
+                    <span class="status-emoji">😏</span>
+                    <span class="status-label">Charisma</span>
+                    <div class="progress-bar-container">
+                        <div id="bar-charisma" class="progress-bar charisma-bad" style="width: 50%;">50%</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <nav id="bottom-nav">
+            <div class="nav-icons-row">
+                <button id="btn-occupation" class="nav-icon-btn">
+                    <span class="material-symbols-outlined">work</span>
+                    <span>Occupation</span>
+                </button>
+                <button id="btn-assets" class="nav-icon-btn">
+                    <span class="material-symbols-outlined">account_balance</span>
+                    <span>Assets</span>
+                </button>
+            </div>
+            
+            <button id="btn-age" class="age-btn">+</button>
+
+            <div class="nav-icons-row">
+                <button id="btn-relationships" class="nav-icon-btn">
+                    <span class="material-symbols-outlined">group</span>
+                    <span>Relations</span>
+                </button>
+                <button id="btn-activities" class="nav-icon-btn">
+                    <span class="material-symbols-outlined">directions_run</span>
+                    <span>Activities</span>
+                </button>
+            </div>
+        </nav>
+
+        <div id="modal-container" class="hidden">
+            <div id="modal-content">
+                <header id="modal-header">
+                    <h2 id="modal-title">Título del Modal</h2>
+                    <button id="btn-close-modal" class="close-btn">&times;</button>
+                </header>
+                <div id="modal-body">
+                    </div>
+            </div>
+        </div>
+        
+        <button id="btn-profile">Mi Perfil</button>
+    </div>
+
+    <script src="/js/engine.js"></script>
+</body>
+</html>
