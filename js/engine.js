@@ -69,8 +69,8 @@ function addToLog(text, type = 'event') {
 }
 
 // Lógica de "Avanzar Edad" para la Fase 1
+// Lógica de "Avanzar Edad" conectada al EventManager
 function advanceAge() {
-    // Definimos el salto de edad (12 meses por defecto para la Fase 1)
     const ageJumpMonths = 12;
     basePlayer.ageMonths += ageJumpMonths;
     const currentAgeYears = Math.floor(basePlayer.ageMonths / 12);
@@ -78,13 +78,17 @@ function advanceAge() {
     // Añadimos el título del año al registro
     addToLog(`Age: ${currentAgeYears} years`, 'year');
     
-    // Simulamos un evento simple para la Fase 1
-    const dummyEvent = {
-        title: "He avanzado otro año",
-        description: `Tengo ${currentAgeYears} años. No ha pasado nada especial. Mis estadísticas siguen igual.`
-    };
+    // 1. Pedimos al Gestor un evento basado en la edad actual
+    const occurredEvent = EventManager.getRandomEvent(currentAgeYears);
     
-    addToLog(`${dummyEvent.title}. ${dummyEvent.description}`);
+    // 2. Evaluamos qué hacer
+    if (occurredEvent) {
+        // Si ocurrió un evento, lo renderizamos en pantalla
+        EventRenderer.renderEvent(occurredEvent);
+    } else {
+        // Si los dados dijeron que no pasa nada, ponemos un texto por defecto
+        addToLog(`Tienes ${currentAgeYears} años. Ha sido un año tranquilo.`);
+    }
 }
 
 // Lógica de Modales (para submenús)
@@ -113,3 +117,13 @@ document.getElementById('btn-activities').addEventListener('click', () => openMo
 
 // Botón de perfil (simulación)
 document.getElementById('btn-profile').addEventListener('click', () => openModal('MI PERFIL', 'Este es tu perfil. JS lo llenará con tus datos.'));
+
+// --- INICIALIZACIÓN DEL JUEGO ---
+updateUI();
+
+// Cargar los eventos desde el JSON antes de empezar a jugar
+EventManager.loadEvents().then(() => {
+    console.log("¡El motor de eventos está listo!");
+}).catch(err => {
+    console.error("Hubo un problema cargando los eventos:", err);
+});

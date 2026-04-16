@@ -3,9 +3,11 @@
     "id": "job_offer",
     "title": "Oferta de Trabajo",
     "text": "Recibes una oferta de trabajo como programador junior.",
-    "minAge": 18,
-    "maxAge": 65,
     "triggerProbability": 20,
+    "requirements": {
+      "minAge": 18,
+      "maxAge": 65
+    },
     "choices": [
       {
         "text": "Aceptar la oferta",
@@ -44,9 +46,16 @@
     "id": "illness",
     "title": "Caes Enfermo",
     "text": "Te sientes mal y decides ir al médico.",
-    "minAge": 0,
-    "maxAge": 100,
-    "triggerProbability": 50,
+    "probabilityByAge": [
+      { "minAge": 0, "maxAge": 15, "probability": 5 },
+      { "minAge": 16, "maxAge": 30, "probability": 8 },
+      { "minAge": 31, "maxAge": 50, "probability": 12 },
+      { "minAge": 51, "maxAge": 70, "probability": 25 },
+      { "minAge": 71, "maxAge": 100, "probability": 40 }
+    ],
+    "requirements": {
+      "maxHealth": 60
+    },
     "choices": [
       {
         "text": "Ir al médico",
