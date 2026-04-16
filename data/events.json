@@ -15,18 +15,12 @@
           {
             "probability": 80,
             "resultText": "¡Felicidades! Has conseguido el trabajo y empiezas con buen pie.",
-            "statChanges": {
-              "happiness": 10,
-              "money": 50000
-            }
+            "statChanges": { "happiness": 10, "money": 50000 }
           },
           {
             "probability": 20,
             "resultText": "El trabajo resulta ser más desafiante de lo esperado, pero aprendes mucho.",
-            "statChanges": {
-              "happiness": -5,
-              "health": -2
-            }
+            "statChanges": { "happiness": -5, "health": -2 }
           }
         ]
       },
@@ -61,23 +55,65 @@
         "text": "Ir al médico",
         "outcomes": [
           {
-            "probability": 70,
-            "resultText": "El médico te receta medicamentos y te recuperas rápidamente.",
-            "statChanges": {
-              "health": 10,
-              "money": -100
-            }
-          },
+            "probability": 100,
+            "resultText": "Necesitas elegir un médico para consultar.",
+            "nextEventId": "doctor_selection"
+          }
+        ]
+      },
+      {
+        "text": "Ignorar síntomas",
+        "outcomes": [
           {
-            "probability": 30,
-            "resultText": "La enfermedad es más grave de lo esperado y necesitas reposo.",
-            "statChanges": {
-              "health": -20,
-              "happiness": -10
-            }
+            "probability": 100,
+            "resultText": "Decides no ir al médico y esperas a mejorar.",
+            "statChanges": { "health": -15, "happiness": -5 }
           }
         ]
       }
     ]
+  },
+  {
+    "id": "doctor_selection",
+    "type": "form",
+    "title": "Seleccionar Médico",
+    "text": "¿Qué médico prefieres? Elige entre las opciones disponibles.",
+    "inputs": [
+      {
+        "type": "select",
+        "id": "doctorId",
+        "label": "Médico",
+        "options": [
+          { "label": "Dr. Smith - Caro pero Excelente (€500)", "value": "smith" },
+          { "label": "Dr. Nick - Barato pero Arriesgado (€100)", "value": "nick" }
+        ]
+      }
+    ],
+    "outcomes": {
+      "smith": [
+        {
+          "probability": 95,
+          "resultText": "El Dr. Smith te proporciona el mejor tratamiento. Te recuperas completamente.",
+          "statChanges": { "health": 25, "money": -500 }
+        },
+        {
+          "probability": 5,
+          "resultText": "Incluso con el mejor médico, hubo complicaciones.",
+          "statChanges": { "health": 10, "money": -500, "happiness": -5 }
+        }
+      ],
+      "nick": [
+        {
+          "probability": 60,
+          "resultText": "El Dr. Nick hace un trabajo decente por ese precio. Te sientes mejor.",
+          "statChanges": { "health": 12, "money": -100 }
+        },
+        {
+          "probability": 40,
+          "resultText": "El Dr. Nick cometió un error. Tu salud empeoró.",
+          "statChanges": { "health": -10, "money": -100, "happiness": -15 }
+        }
+      ]
+    }
   }
 ]
