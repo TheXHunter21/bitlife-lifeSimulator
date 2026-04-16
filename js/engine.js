@@ -70,16 +70,22 @@ function addToLog(text, type = 'event') {
 
 // Lógica de "Avanzar Edad" para la Fase 1
 // Lógica de "Avanzar Edad" conectada al EventManager
+// Lógica de "Avanzar Edad" conectada al nuevo EventManager
 function advanceAge() {
+    // Definimos el salto de edad (12 meses)
     const ageJumpMonths = 12;
     basePlayer.ageMonths += ageJumpMonths;
     const currentAgeYears = Math.floor(basePlayer.ageMonths / 12);
     
+    // TRUCO: Le añadimos temporalmente la propiedad 'age' (en años) al basePlayer 
+    // para que el EventManager la encuentre sin problemas.
+    basePlayer.age = currentAgeYears;
+    
     // Añadimos el título del año al registro
     addToLog(`Age: ${currentAgeYears} years`, 'year');
     
-    // 1. Pedimos al Gestor un evento basado en la edad actual
-    const occurredEvent = EventManager.getRandomEvent(currentAgeYears);
+    // ¡LA SOLUCIÓN! Pasamos el objeto 'basePlayer' completo, no solo el número
+    const occurredEvent = EventManager.getRandomEvent(basePlayer);
     
     // 2. Evaluamos qué hacer
     if (occurredEvent) {
