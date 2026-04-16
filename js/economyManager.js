@@ -42,10 +42,12 @@ const EconomyManager = (() => {
       player.money = 0;
     }
 
-    // Generar resumen
-    const summary = `Este año ganaste €${totalIncome.toLocaleString()} y gastaste €${totalExpenses.toLocaleString()}`;
-
-    return summary;
+    // SOLUCIÓN: Solo generar resumen si hubo ingresos o gastos
+    if (totalIncome > 0 || totalExpenses > 0) {
+      return `Este año ganaste €${totalIncome.toLocaleString('es-ES')} y pagaste €${totalExpenses.toLocaleString('es-ES')} en gastos.`;
+    } else {
+      return null; // Si no pasó nada económico, no devolvemos texto
+    }
   };
 
   /**

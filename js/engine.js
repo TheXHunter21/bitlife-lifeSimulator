@@ -75,28 +75,32 @@ function addToLog(text, type = 'event') {
 // Lógica de "Avanzar Edad" para la Fase 1
 // Lógica de "Avanzar Edad" conectada al EventManager
 // Lógica de "Avanzar Edad" conectada al nuevo EventManager
+// Lógica de "Avanzar Edad" conectada al nuevo EventManager y EconomyManager
 function advanceAge() {
     // Definimos el salto de edad (12 meses)
     const ageJumpMonths = 12;
     basePlayer.ageMonths += ageJumpMonths;
     const currentAgeYears = Math.floor(basePlayer.ageMonths / 12);
     
-    // TRUCO: Le añadimos temporalmente la propiedad 'age' (en años) al basePlayer 
-    // para que el EventManager la encuentre sin problemas.
     basePlayer.age = currentAgeYears;
     
     // Añadimos el título del año al registro
     addToLog(`Age: ${currentAgeYears} years`, 'year');
     
-    // ¡LA SOLUCIÓN! Pasamos el objeto 'basePlayer' completo, no solo el número
+    // --- 1. PROCESAR LA ECONOMÍA ---
+    const economyReport = EconomyManager.processYear(basePlayer);
+    if (economyReport) { // Si el Gestor devolvió texto (no fue null)
+        addToLog(economyReport, 'finance');
+    }
+    
+    // --- 2. PROCESAR EVENTOS ALEATORIOS ---
     const occurredEvent = EventManager.getRandomEvent(basePlayer);
     
-    // 2. Evaluamos qué hacer
+    // Evaluamos qué hacer con el evento
     if (occurredEvent) {
-        // Si ocurrió un evento, lo renderizamos en pantalla
         EventRenderer.renderEvent(occurredEvent);
     } else {
-        // Si los dados dijeron que no pasa nada, ponemos un texto por defecto
+        // Solo si NO hubo evento, imprimimos año tranquilo
         addToLog(`Tienes ${currentAgeYears} años. Ha sido un año tranquilo.`);
     }
 }

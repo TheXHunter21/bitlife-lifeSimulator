@@ -305,3 +305,7 @@ body {
 .choice-btn:active {
     opacity: 0.7;
 }
+
+.log-finance {
+    color: var(--money-color); font-weight: 500;
+}
