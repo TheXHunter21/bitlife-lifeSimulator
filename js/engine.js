@@ -123,10 +123,6 @@ function openModal(title, content) {
 function closeModal() {
     dom.modalContainer.classList.add('hidden');
 }
-
-// Inicialización
-updateUI();
-
 // Event Listeners
 dom.btnAge.addEventListener('click', advanceAge);
 dom.btnCloseModal.addEventListener('click', closeModal);
@@ -141,11 +137,14 @@ document.getElementById('btn-activities').addEventListener('click', () => openMo
 document.getElementById('btn-profile').addEventListener('click', () => openModal('MI PERFIL', 'Este es tu perfil. JS lo llenará con tus datos.'));
 
 // --- INICIALIZACIÓN DEL JUEGO ---
-updateUI();
+updateUI(); // Se llama una sola vez
 
-// Cargar los eventos desde el JSON antes de empezar a jugar
-EventManager.loadEvents().then(() => {
-    console.log("¡El motor de eventos está listo!");
+// Cargar Eventos y Ocupaciones al iniciar
+Promise.all([
+    EventManager.loadEvents(),
+    OccupationManager.loadOccupations()
+]).then(() => {
+    console.log("¡Motor de Eventos y Ocupaciones listos!");
 }).catch(err => {
-    console.error("Hubo un problema cargando los eventos:", err);
+    console.error("Hubo un problema iniciando el motor:", err);
 });
