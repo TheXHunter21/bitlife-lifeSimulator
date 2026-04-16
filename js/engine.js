@@ -98,9 +98,21 @@ function advanceAge() {
 }
 
 // Lógica de Modales (para submenús)
+// Lógica de Modales (actualizada para soportar Nodos DOM y strings)
 function openModal(title, content) {
     dom.modalTitle.textContent = title;
-    dom.modalBody.innerHTML = content;
+    
+    // 1. Limpiamos cualquier cosa que hubiera antes en el modal
+    dom.modalBody.innerHTML = '';
+    
+    // 2. Verificamos si nos enviaron texto o un objeto HTML
+    if (typeof content === 'string') {
+        dom.modalBody.innerHTML = content;
+    } else {
+        // Si es un objeto, lo añadimos como "hijo", conservando sus botones y clics
+        dom.modalBody.appendChild(content);
+    }
+    
     dom.modalContainer.classList.remove('hidden');
 }
 
