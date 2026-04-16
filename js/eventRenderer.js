@@ -122,6 +122,9 @@ const EventRenderer = (() => {
       if (nextEvent) {
         renderEvent(nextEvent);
         return;
+      } else {
+        // SALVAVIDAS: Si escribimos mal el ID en el JSON, cerramos el modal para no bloquear el juego
+        console.warn(`[ERROR] Evento encadenado no encontrado: ${outcome.nextEventId}`);
       }
     }
 

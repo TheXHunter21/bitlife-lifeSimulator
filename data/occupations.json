@@ -1,36 +1,19 @@
 {
   "education": [
     {
-      "name": "Escuela Secundaria",
-      "minAge": 12,
-      "maxAge": 18
-    },
-    {
-      "name": "Universidad: Ingeniería",
-      "minAge": 18,
-      "req": "Escuela Secundaria"
+      "name": "Universidad",
+      "minAge": 17,
+      "req": "Escuela Secundaria",
+      "majors": ["Ciencias Políticas", "Ingeniería", "Marketing", "Biología", "Ciencias de la Computación"]
     }
   ],
   "fullTime": [
-    {
-      "name": "Programador Junior",
-      "minAge": 22,
-      "req": "Universidad: Ingeniería",
-      "salary": 40000
-    }
+    { "name": "Programador Junior", "minAge": 22, "req": "Universidad (Ingeniería)", "salary": 40000 }
   ],
   "partTime": [
-    {
-      "name": "Cajero de Comida Rápida",
-      "minAge": 16,
-      "salary": 8000
-    }
+    { "name": "Cajero de Comida Rápida", "minAge": 16, "salary": 8000 }
   ],
   "freelance": [
-    {
-      "name": "Tutor de Matemáticas",
-      "minAge": 15,
-      "incomePerGig": 50
-    }
+    { "name": "Tutor de Matemáticas", "minAge": 15, "incomePerGig": 50 }
   ]
 }

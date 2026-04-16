@@ -309,3 +309,32 @@ body {
 .log-finance {
     color: var(--money-color); font-weight: 500;
 }
+
+/* ESTILOS PARA FORMULARIOS DE EVENTOS */
+.event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.event-form label {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 0.9em;
+}
+
+.form-select {
+    padding: 12px;
+    border: 2px solid #e5e5ea;
+    border-radius: 8px;
+    font-size: 1em;
+    background-color: #f9f9f9;
+    color: var(--text-color);
+    outline: none;
+    cursor: pointer;
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+}
