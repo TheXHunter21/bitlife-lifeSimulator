@@ -22,10 +22,22 @@ const AssetManager = (() => {
       if (player.money >= item.price) {
         player.money -= item.price;
         
-        // Clasificamos el item en la categoría correcta del inventario
-        if (item.type === "Vehículo") player.assets.vehicles.push(item);
-        else if (item.type === "Propiedad") player.assets.properties.push(item);
-        else player.assets.possessions.push(item);
+        // 🛡️ PARCHE DE SEGURIDAD (AUTO-SANACIÓN): 
+        // Si el jugador no tiene el inventario creado, lo creamos en este instante
+        if (!player.assets) player.assets = {};
+        if (!player.assets.vehicles) player.assets.vehicles = [];
+        if (!player.assets.properties) player.assets.properties = [];
+        if (!player.assets.possessions) player.assets.possessions = [];
+
+        // Clasificamos el item en la categoría correcta
+        // (Añadí "Vehiculo" sin tilde por si en el JSON lo escribes distinto alguna vez)
+        if (item.type === "Vehículo" || item.type === "Vehiculo") {
+            player.assets.vehicles.push(item);
+        } else if (item.type === "Propiedad") {
+            player.assets.properties.push(item);
+        } else {
+            player.assets.possessions.push(item);
+        }
         
         return true;
       }

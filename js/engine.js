@@ -1,20 +1,25 @@
 /* engine.js */
 
 // Un jugador base provisional para la Fase 1
+/* engine.js */
+
+// Un jugador base provisional para la Fase 1
 const basePlayer = {
     name: "Crea un personaje",
     title: "Crea un personaje",
-    money: 0,
+    money: 10000000, // 10 millones para testear compras
     ageMonths: 0,
+    age: 0,
     happiness: 50,
     health: 50,
     intelligence: 50,
     looks: 50,
     charisma: 50,
-    educationHistory: [], // Ej: Guardará ["Escuela Secundaria", "Universidad"]
-    mainOccupation: null, // Guardará el trabajo o escuela actual
+    educationHistory: [],
+    mainOccupation: null,
     partTimeJob: null,
     freelanceJobs: [],
+    // --- ESTO ES LO QUE FALTABA (EL INVENTARIO) ---
     assets: {
         properties: [],
         vehicles: [],
