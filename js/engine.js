@@ -73,32 +73,41 @@ function addToLog(text, type = 'event') {
 }
 
 // --- SISTEMA DE ETAPAS DE VIDA ---
+// --- SISTEMA DE ETAPAS DE VIDA ---
 function checkLifeStages() {
     const age = basePlayer.age;
 
-    // Inicial (3 años) - 80% probabilidad
-    if (age === 3 && Math.random() <= 0.80) {
-        basePlayer.mainOccupation = { name: "Educación Inicial", salary: 0 };
-        addToLog("Tus padres te han inscrito en educación inicial.");
+    // Función auxiliar para guardar la escuela anterior antes de pasar a la siguiente
+    const savePreviousEducation = () => {
+        if (basePlayer.mainOccupation && !basePlayer.educationHistory.includes(basePlayer.mainOccupation.name)) {
+            basePlayer.educationHistory.push(basePlayer.mainOccupation.name);
+        }
+    };
+
+    // Inicial (3 años) - 80% probabilidad (Solo si no está ya inscrito)
+    if (age === 3 && (!basePlayer.mainOccupation || basePlayer.mainOccupation.name !== "Educación Inicial")) {
+        if (Math.random() <= 0.80) {
+            basePlayer.mainOccupation = { name: "Educación Inicial", salary: 0 };
+            addToLog("Tus padres te han inscrito en educación inicial.");
+        }
     }
-    // Primaria (6 años)
-    else if (age === 6) {
+    // Primaria (6 años obligatoria)
+    else if (age === 6 && (!basePlayer.mainOccupation || basePlayer.mainOccupation.name !== "Escuela Primaria")) {
+        savePreviousEducation(); // Guardamos el Inicial en el historial (si lo hizo)
         basePlayer.mainOccupation = { name: "Escuela Primaria", salary: 0 };
         addToLog("Has empezado la escuela primaria.");
     }
-    // Secundaria (12 años)
-    else if (age === 12) {
+    // Secundaria (12 años obligatoria)
+    else if (age === 12 && (!basePlayer.mainOccupation || basePlayer.mainOccupation.name !== "Escuela Secundaria")) {
+        savePreviousEducation(); // Guardamos la Primaria en el historial
         basePlayer.mainOccupation = { name: "Escuela Secundaria", salary: 0 };
         addToLog("Has empezado la escuela secundaria.");
     }
     // Graduación Secundaria (17 años)
     else if (age === 17 && basePlayer.mainOccupation && basePlayer.mainOccupation.name === "Escuela Secundaria") {
-        basePlayer.mainOccupation = null; // Quedas libre para la universidad o trabajo
-        // Guardamos que terminaste la secundaria para cumplir requisitos futuros
-        if (!basePlayer.educationHistory.includes("Escuela Secundaria")) {
-            basePlayer.educationHistory.push("Escuela Secundaria");
-        }
-        addToLog("¡Te has graduado de la escuela secundaria!");
+        savePreviousEducation(); // Guardamos la Secundaria en el historial
+        basePlayer.mainOccupation = null; // Quedas libre para universidad o trabajo
+        addToLog("¡Te has graduado de la escuela secundaria! Ya puedes decidir tu futuro.");
     }
 }
 
@@ -281,7 +290,7 @@ function showMajorSelection(occ) {
     container.className = 'event-form';
     
     container.innerHTML = `
-        <p style="text-align: center; margin-bottom: 20px;">¡Aplica a la universidad hoy!</p>
+        <p style="text-align: center; margin-bottom: 20px;">Estás aplicando a la Universidad. Tu inteligencia actual influirá en la decisión.</p>
         <label>Elige tu carrera (Major):</label>
     `;
     
@@ -297,16 +306,34 @@ function showMajorSelection(occ) {
 
     const btnSubmit = document.createElement('button');
     btnSubmit.className = 'choice-btn';
-    btnSubmit.textContent = 'Aplicar a la Universidad';
+    btnSubmit.textContent = 'Enviar Solicitud';
+    
     btnSubmit.addEventListener('click', () => {
         const chosenMajor = select.value;
-        // Creamos una nueva ocupación combinando el nombre y la carrera
-        const customOcc = { ...occ, name: `${occ.name} (${chosenMajor})` };
-        assignOccupation(customOcc, 'education');
-    });
-    container.appendChild(btnSubmit);
+        const intelligence = basePlayer.intelligence;
+        let accepted = true;
 
-    openModal('UNIVERSITY', container);
+        // Lógica de probabilidad de ingreso basada en inteligencia
+        if (intelligence < 30) {
+            accepted = Math.random() < 0.1; // 10% de probabilidad
+        } else if (intelligence < 50) {
+            accepted = Math.random() < 0.4; // 40% de probabilidad
+        } else if (intelligence < 70) {
+            accepted = Math.random() < 0.8; // 80% de probabilidad
+        }
+
+        if (accepted) {
+            const customOcc = { ...occ, name: `${occ.name} (${chosenMajor})` };
+            addToLog(`¡Tu solicitud ha sido ACEPTADA! Has empezado a estudiar ${chosenMajor}.`, 'event');
+            assignOccupation(customOcc, 'education');
+        } else {
+            addToLog(`Tu solicitud a la universidad ha sido RECHAZADA. No cumples con los estándares académicos.`, 'event');
+            closeModal();
+        }
+    });
+    
+    container.appendChild(btnSubmit);
+    openModal('SOLICITUD UNIVERSITARIA', container);
 }
 
 // Conectar el botón del menú a la nueva función
