@@ -1,0 +1,44 @@
+{
+  "carDealers": [
+    {
+      "id": "rubio_automotive",
+      "name": "Rubio Automotive",
+      "description": "Shop for cars",
+      "inventory": [
+        { "id": "car_1", "name": "Cadillac CT5-V", "type": "Vehículo", "condition": "Nuevo", "price": 97739, "monthlyMaintenance": 425, "imageUrl": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=400&q=80" },
+        { "id": "car_2", "name": "Nissan Titan (Truck)", "type": "Vehículo", "condition": "Usado", "price": 30251, "monthlyMaintenance": 120, "imageUrl": "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=400&q=80" }
+      ]
+    }
+  ],
+  "realEstate": [
+    {
+      "id": "lopez_albeniz",
+      "name": "Lopez & Albeniz Realtors",
+      "description": "Shop for properties",
+      "inventory": [
+        { "id": "re_1", "name": "Apartamento en la Ciudad", "type": "Propiedad", "condition": "Bueno", "price": 250000, "monthlyMaintenance": 400, "imageUrl": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80" }
+      ]
+    }
+  ],
+  "musicStores": [
+    {
+      "id": "lunas_music",
+      "name": "Luna's Music",
+      "description": "Shop for instruments",
+      "inventory": [
+        { "id": "mus_1", "name": "Guitarra Acústica", "type": "Posesión", "condition": "Nuevo", "price": 450, "monthlyMaintenance": 0, "imageUrl": "https://images.unsplash.com/photo-1550226891-ef816a84f5d5?auto=format&fit=crop&w=400&q=80" },
+        { "id": "mus_2", "name": "Piano de Cola", "type": "Posesión", "condition": "Nuevo", "price": 12000, "monthlyMaintenance": 50, "imageUrl": "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=400&q=80" }
+      ]
+    }
+  ],
+  "jewelers": [
+    {
+      "id": "romero_brothers",
+      "name": "Romero Brothers Jeweler",
+      "description": "Shop for jewelry",
+      "inventory": [
+        { "id": "jewel_1", "name": "18K White Gold Ring", "type": "Posesión", "condition": "Nuevo", "price": 2500, "monthlyMaintenance": 0, "imageUrl": "https://images.unsplash.com/photo-1605100804763-247f67b2548e?auto=format&fit=crop&w=400&q=80" }
+      ]
+    }
+  ]
+}
