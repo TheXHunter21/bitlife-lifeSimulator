@@ -1,42 +1,5 @@
 [
   {
-    "id": "job_offer",
-    "title": "Oferta de Trabajo",
-    "text": "Recibes una oferta de trabajo como programador junior.",
-    "triggerProbability": 20,
-    "requirements": {
-      "minAge": 18,
-      "maxAge": 65
-    },
-    "choices": [
-      {
-        "text": "Aceptar la oferta",
-        "outcomes": [
-          {
-            "probability": 80,
-            "resultText": "¡Felicidades! Has conseguido el trabajo y empiezas con buen pie.",
-            "statChanges": { "happiness": 10, "money": 50000 }
-          },
-          {
-            "probability": 20,
-            "resultText": "El trabajo resulta ser más desafiante de lo esperado, pero aprendes mucho.",
-            "statChanges": { "happiness": -5, "health": -2 }
-          }
-        ]
-      },
-      {
-        "text": "Rechazar la oferta",
-        "outcomes": [
-          {
-            "probability": 100,
-            "resultText": "Decides seguir buscando oportunidades mejores.",
-            "statChanges": {}
-          }
-        ]
-      }
-    ]
-  },
-  {
     "id": "illness",
     "title": "Caes Enfermo",
     "text": "Te sientes mal y decides ir al médico.",

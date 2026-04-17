@@ -14,7 +14,12 @@ const basePlayer = {
     educationHistory: [], // Ej: Guardará ["Escuela Secundaria", "Universidad"]
     mainOccupation: null, // Guardará el trabajo o escuela actual
     partTimeJob: null,
-    freelanceJobs: []
+    freelanceJobs: [],
+    assets: {
+        properties: [],
+        vehicles: [],
+        possessions: []
+    }
 };
 
 // Referencias a elementos del DOM
@@ -175,18 +180,25 @@ dom.btnCloseModal.addEventListener('click', closeModal);
 // Event Listeners para botones de menú (simulación para Fase 1)
 // --- SISTEMA DE MENÚS DINÁMICOS ---
 
-// --- SISTEMA DE MENÚS DINÁMICOS ---
 
 function openOccupationMenu() {
     const container = document.createElement('div');
     container.className = 'occupation-menu';
 
-    // 1. SECCIÓN: OCUPACIÓN ACTUAL ("You")
+   // 1. SECCIÓN: OCUPACIÓN ACTUAL ("You")
     if (basePlayer.mainOccupation) {
-        const youTitle = document.createElement('div');
-        youTitle.innerHTML = '<h3 style="background-color: #6c757d; color: white; padding: 5px; margin: 0; text-align: center; border-radius: 4px;">TÚ (You)</h3>';
+        // Título sutil como divisor
+        const youTitle = document.createElement('h3');
+        youTitle.textContent = 'Tú (Ocupación Actual)';
+        youTitle.style.backgroundColor = '#f0f0f5';
+        youTitle.style.color = '#8e8e93';
+        youTitle.style.padding = '4px 8px';
+        youTitle.style.margin = '0 0 10px 0';
+        youTitle.style.fontSize = '0.9em';
+        youTitle.style.textAlign = 'center';
         container.appendChild(youTitle);
 
+        // Botón de tu trabajo/escuela actual
         const currentOccBtn = document.createElement('button');
         currentOccBtn.className = 'choice-btn';
         currentOccBtn.style.width = '100%';
@@ -196,9 +208,9 @@ function openOccupationMenu() {
         currentOccBtn.style.border = '2px solid var(--primary-color)';
         currentOccBtn.innerHTML = `<strong>${basePlayer.mainOccupation.name}</strong>`;
 
-        // Opcion de renunciar o dejar la escuela
+        // Opción de renunciar o dejar la escuela
         currentOccBtn.addEventListener('click', () => {
-            if(confirm(`¿Quieres dejar tu ocupación actual: ${basePlayer.mainOccupation.name}?`)) {
+            if(confirm(`¿Quieres abandonar: ${basePlayer.mainOccupation.name}?`)) {
                 addToLog(`Has abandonado: ${basePlayer.mainOccupation.name}`);
                 basePlayer.mainOccupation = null;
                 closeModal();
@@ -338,7 +350,168 @@ function showMajorSelection(occ) {
 
 // Conectar el botón del menú a la nueva función
 document.getElementById('btn-occupation').addEventListener('click', openOccupationMenu);
-document.getElementById('btn-assets').addEventListener('click', () => openModal('ASSETS', 'Este es el menú de activos. JS lo llenará más adelante.'));
+// --- SISTEMA DE ASSETS (POSESIONES Y COMPRAS) ---
+
+function openAssetsMenu() {
+    const container = document.createElement('div');
+    
+    // 1. Finanzas (Botón para ver el resumen)
+    const finTitle = document.createElement('div');
+    finTitle.className = 'asset-category';
+    finTitle.textContent = 'Finances';
+    container.appendChild(finTitle);
+    
+    const btnFinances = document.createElement('button');
+    btnFinances.className = 'choice-btn';
+    btnFinances.style.backgroundColor = '#fff';
+    btnFinances.style.color = 'var(--text-color)';
+    btnFinances.innerHTML = `<strong>💰 Finanzas</strong> <br><span style="font-size:0.8em; color:#8e8e93;">Mira tus finanzas</span>`;
+    btnFinances.addEventListener('click', showFinancesPopup);
+    container.appendChild(btnFinances);
+
+    // 2. Inventario (Propiedades, Vehículos, etc)
+    const belongTitle = document.createElement('div');
+    belongTitle.className = 'asset-category';
+    belongTitle.textContent = 'Belongings';
+    container.appendChild(belongTitle);
+
+    const categories = [
+        { id: 'properties', name: '🏠 Propiedades', desc: 'Gestiona tus inmuebles' },
+        { id: 'vehicles', name: '🚗 Vehículos', desc: 'Mira tus coches' },
+        { id: 'possessions', name: '🎒 Posesiones', desc: 'Joyas, instrumentos...' }
+    ];
+
+    categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.style.backgroundColor = '#fff';
+        btn.style.color = 'var(--text-color)';
+        btn.style.marginBottom = '5px';
+        const itemCount = basePlayer.assets[cat.id].length;
+        btn.innerHTML = `<strong>${cat.name} (${itemCount})</strong> <br><span style="font-size:0.8em; color:#8e8e93;">${cat.desc}</span>`;
+        container.appendChild(btn);
+    });
+
+    // 3. Botón Gigante de Shopping
+    const shopBtn = document.createElement('button');
+    shopBtn.className = 'shopping-btn';
+    shopBtn.textContent = '🛍️ Go Shopping...';
+    shopBtn.addEventListener('click', openShoppingMenu);
+    container.appendChild(shopBtn);
+
+    openModal('ASSETS', container);
+}
+
+function showFinancesPopup() {
+    let totalAssetsValue = 0;
+    const allAssets = [...basePlayer.assets.properties, ...basePlayer.assets.vehicles, ...basePlayer.assets.possessions];
+    allAssets.forEach(item => totalAssetsValue += item.price);
+    
+    let netWorth = basePlayer.money + totalAssetsValue;
+
+    const container = document.createElement('div');
+    container.innerHTML = `
+        <div class="item-detail-row"><span>Bank Balance:</span> <strong>€${basePlayer.money.toLocaleString('es-ES')}</strong></div>
+        <div class="item-detail-row"><span>Valor de Activos:</span> <strong>€${totalAssetsValue.toLocaleString('es-ES')}</strong></div>
+        <div class="item-detail-row" style="border-bottom:none; margin-top:10px; font-size:1.1em;">
+            <span>Net Worth (Patrimonio):</span> <strong style="color:var(--money-color);">€${netWorth.toLocaleString('es-ES')}</strong>
+        </div>
+    `;
+    openModal('FINANCES', container);
+}
+
+function openShoppingMenu() {
+    const shops = AssetManager.getShops();
+    const container = document.createElement('div');
+    
+    const categories = [
+        { key: 'carDealers', title: 'Car Dealers' },
+        { key: 'realEstate', title: 'Real Estate Brokers' },
+        { key: 'jewelers', title: 'Jewelers' },
+        { key: 'musicStores', title: 'Music Stores' }
+    ];
+
+    categories.forEach(cat => {
+        if (shops[cat.key]) {
+            const title = document.createElement('div');
+            title.className = 'asset-category';
+            title.textContent = cat.title;
+            container.appendChild(title);
+
+            shops[cat.key].forEach(shop => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.style.backgroundColor = '#fff';
+                btn.style.color = 'var(--text-color)';
+                btn.style.marginBottom = '5px';
+                btn.innerHTML = `<strong>${shop.name}</strong> <br><span style="font-size:0.8em; color:#8e8e93;">${shop.description}</span>`;
+                btn.addEventListener('click', () => openStoreInventory(shop));
+                container.appendChild(btn);
+            });
+        }
+    });
+
+    openModal('SHOPPING', container);
+}
+
+function openStoreInventory(shop) {
+    const container = document.createElement('div');
+    container.innerHTML = `<p style="text-align:center; color:#8e8e93;">Bienvenido a ${shop.name}</p>`;
+
+    shop.inventory.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.style.backgroundColor = '#fff';
+        btn.style.color = 'var(--text-color)';
+        btn.style.marginBottom = '8px';
+        btn.style.display = 'flex';
+        btn.style.justifyContent = 'space-between';
+        btn.innerHTML = `<span>${item.name}</span> <strong>€${item.price.toLocaleString('es-ES')}</strong>`;
+        
+        btn.addEventListener('click', () => showItemPurchasePopup(item));
+        container.appendChild(btn);
+    });
+
+    openModal(shop.name.toUpperCase(), container);
+}
+
+function showItemPurchasePopup(item) {
+    const container = document.createElement('div');
+    
+    // Imagen del producto usando URL
+    container.innerHTML = `
+        <img src="${item.imageUrl}" alt="${item.name}" class="item-image">
+        <h3 style="text-align:center; margin-top:0;">${item.name}</h3>
+        <div class="item-detail-row"><span>Precio:</span> <strong>€${item.price.toLocaleString('es-ES')}</strong></div>
+        <div class="item-detail-row"><span>Condición:</span> <strong>${item.condition}</strong></div>
+        <div class="item-detail-row"><span>Tipo:</span> <strong>${item.type}</strong></div>
+        <div class="item-detail-row"><span>Gasto Mensual (Mantenimiento):</span> <strong>€${item.monthlyMaintenance.toLocaleString('es-ES')}</strong></div>
+    `;
+
+    const buyBtn = document.createElement('button');
+    buyBtn.className = 'choice-btn';
+    buyBtn.style.marginTop = '20px';
+    buyBtn.textContent = 'Comprar con Efectivo (Cash)';
+    
+    buyBtn.addEventListener('click', () => {
+        const success = AssetManager.buyItem(basePlayer, item);
+        if (success) {
+            addToLog(`Has comprado un(a) ${item.name} por €${item.price.toLocaleString('es-ES')}.`, 'finance');
+            updateUI();
+            closeModal();
+            // Truco para volver al menú de assets principal tras comprar
+            setTimeout(openAssetsMenu, 300); 
+        } else {
+            alert("¡No tienes suficiente dinero en el banco para comprar esto!");
+        }
+    });
+
+    container.appendChild(buyBtn);
+    openModal('CAR', container); // El título superior
+}
+
+// Conectar el botón físico de ASSETS
+document.getElementById('btn-assets').addEventListener('click', openAssetsMenu);
 document.getElementById('btn-relationships').addEventListener('click', () => openModal('RELATIONSHIPS', 'Este es el menú de relaciones. JS lo llenará más adelante.'));
 document.getElementById('btn-activities').addEventListener('click', () => openModal('ACTIVITIES', 'Este es el menú de actividades. JS lo llenará más adelante.'));
 
@@ -351,7 +524,8 @@ updateUI(); // Se llama una sola vez
 // Cargar Eventos y Ocupaciones al iniciar
 Promise.all([
     EventManager.loadEvents(),
-    OccupationManager.loadOccupations()
+    OccupationManager.loadOccupations(),
+    AssetManager.loadShops()
 ]).then(() => {
     console.log("¡Motor de Eventos y Ocupaciones listos!");
 }).catch(err => {

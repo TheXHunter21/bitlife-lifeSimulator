@@ -338,3 +338,47 @@ body {
 .form-select:focus {
     border-color: var(--primary-color);
 }
+
+/* ESTILOS DE ASSETS Y SHOPPING */
+.asset-category {
+    background-color: #f0f0f5;
+    padding: 8px;
+    margin: 15px 0 5px 0;
+    font-weight: bold;
+    color: #8e8e93;
+    text-align: center;
+}
+
+.shopping-btn {
+    width: 100%;
+    padding: 16px;
+    background-color: #00e5ff; /* Color cyan de Bitlife */
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0,229,255,0.3);
+}
+
+.shopping-btn:active {
+    transform: scale(0.98);
+}
+
+.item-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #e5e5ea;
+}
+
+.item-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f5;
+}

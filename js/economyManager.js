@@ -27,13 +27,37 @@ const EconomyManager = (() => {
     // Calcular gastos
     let totalExpenses = 0;
 
+    // Gastos básicos de vida (solo si es mayor de 18)
     if (player.age > 18) {
-      totalExpenses = Math.round(totalIncome * BASIC_EXPENSE_RATE);
+      totalExpenses += Math.round(totalIncome * BASIC_EXPENSE_RATE);
     }
+
+    // Calcular mantenimiento de activos (Assets)
+    let maintenanceCosts = 0;
+    if (player.assets) {
+      const allAssets = [...player.assets.properties, ...player.assets.vehicles, ...player.assets.possessions];
+      allAssets.forEach(item => {
+        if (item.monthlyMaintenance) {
+          maintenanceCosts += (item.monthlyMaintenance * 12); // Multiplicado por 12 meses
+        }
+      });
+    }
+    
+    totalExpenses += maintenanceCosts;
 
     // Calcular ingresos netos
     const netIncome = totalIncome - totalExpenses;
+    player.money += netIncome;
+    if (player.money < 0) player.money = 0;
 
+    // Generar resumen
+    if (totalIncome > 0 || totalExpenses > 0) {
+        let msg = `Este año ganaste €${totalIncome.toLocaleString('es-ES')} y pagaste €${totalExpenses.toLocaleString('es-ES')} en gastos`;
+        if (maintenanceCosts > 0) msg += ` (incluyendo €${maintenanceCosts.toLocaleString('es-ES')} de mantenimiento)`;
+        return msg + ".";
+    } else {
+        return null;
+    }
     // Actualizar dinero del jugador
     player.money += netIncome;
 
