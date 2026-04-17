@@ -248,7 +248,10 @@ function openOccupationMenu() {
     }
 
     if (!hasOptions && !basePlayer.mainOccupation) {
-        container.innerHTML += '<p style="text-align: center; color: #8e8e93; margin-top: 20px;">No hay opciones disponibles. Avanza de edad.</p>';
+        const noOptionsMsg = document.createElement('p');
+        noOptionsMsg.style.cssText = 'text-align: center; color: #8e8e93; margin-top: 20px;';
+        noOptionsMsg.textContent = 'No hay opciones disponibles. Avanza de edad.';
+        container.appendChild(noOptionsMsg);    
     }
 
     openModal('OCCUPATION', container);
